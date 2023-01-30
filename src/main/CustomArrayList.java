@@ -136,7 +136,6 @@ public class CustomArrayList implements List {
         int newLength = (int) (oldLength * 1.5);
         Object[] newArray = new Object[newLength];
         System.arraycopy(array, 0, newArray, 0, oldLength);
-        clear(array);
         array = newArray;
         arrayCapacity = newLength;
     }

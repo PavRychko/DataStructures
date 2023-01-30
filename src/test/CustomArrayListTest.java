@@ -239,8 +239,22 @@ public class CustomArrayListTest {
         assertEquals(expected, result);
     }
 
+    @Test
+    public void increaseArrayLengthTest(){
+        //given
+        CustomArrayList list = prepareArrayList();
+
+        //do
+        for (int i = 0; i < 100; i++) {
+            list.add(Integer.toString(i));
+        }
+
+        //verify
+        assertEquals(103, list.size());
+    }
+
     private CustomArrayList prepareArrayList() {
-        CustomArrayList list = new CustomArrayList();
+        CustomArrayList list = new CustomArrayList(4);
         list.add(first);
         list.add(second);
         list.add(third);
