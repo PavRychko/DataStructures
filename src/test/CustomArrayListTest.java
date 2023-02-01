@@ -191,6 +191,7 @@ public class CustomArrayListTest {
         //given
         CustomArrayList list = prepareArrayList();
         list.add(first);
+        list.add(null);
         String test = "test";
 
         //do
@@ -202,7 +203,7 @@ public class CustomArrayListTest {
         //verify
         assertEquals(0, resultForFirst);
         assertEquals(2, resultForThird);
-        assertEquals(-1, resultForNull);
+        assertEquals(4, resultForNull);
         assertEquals(-1, resultForNonAddedObject);
     }
 
@@ -211,6 +212,7 @@ public class CustomArrayListTest {
         //given
         CustomArrayList list = prepareArrayList();
         list.add(first);
+        list.add(null);
         String test = "test";
 
         //do
@@ -222,7 +224,7 @@ public class CustomArrayListTest {
         //verify
         assertEquals(3, resultForFirst);
         assertEquals(2, resultForThird);
-        assertEquals(-1, resultForNull);
+        assertEquals(4, resultForNull);
         assertEquals(-1, resultForNonAddedObject);
     }
 

@@ -1,6 +1,7 @@
 package main;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class CustomArrayList implements List {
 
@@ -50,7 +51,7 @@ public class CustomArrayList implements List {
         checkIndex(index);
         Object old = array[index];
         array[index] = null;
-        System.arraycopy(array, index + 1, array, index, size - index);
+        System.arraycopy(array, index + 1, array, index, size - index - 1);
         size--;
         return old;
     }
@@ -86,21 +87,14 @@ public class CustomArrayList implements List {
 
     @Override
     public boolean contains(Object value) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(array[i], value)) {
-                return true;
-            }
-        }
-        return false;
+        return indexOf(value) != -1;
     }
 
     @Override
     public int indexOf(Object value) {
-        if (contains(value)) {
-            for (int i = 0; i < size; i++) {
-                if (array[i].equals(value)) {
-                    return i;
-                }
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(array[i], value)) {
+                return i;
             }
         }
         return -1;
@@ -108,11 +102,9 @@ public class CustomArrayList implements List {
 
     @Override
     public int lastIndexOf(Object value) {
-        if (contains(value)) {
-            for (int i = size - 1; i >= 0; i--) {
-                if (array[i].equals(value)) {
-                    return i;
-                }
+        for (int i = size - 1; i >= 0; i--) {
+            if (Objects.equals(array[i], value)) {
+                return i;
             }
         }
         return -1;
@@ -120,15 +112,11 @@ public class CustomArrayList implements List {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
+        StringJoiner stringJoiner = new StringJoiner(", ", "[", "[");
         for (int i = 0; i < size; i++) {
-            builder.append(array[i] + ", ");
+            stringJoiner.add(array[i].toString());
         }
-        int length = builder.length();
-        builder.delete(length - 2, length);
-        builder.append("]");
-        return builder.toString();
+        return stringJoiner.toString();
     }
 
     private void increaseArrayLength() {
