@@ -3,11 +3,11 @@ package main;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class CustomArrayList implements List {
+public class CustomArrayList<T> implements List<T> {
 
     private int size = 0;
     private int arrayCapacity;
-    private Object[] array;
+    private T[] array;
     private static final int DEFAULT_INITIAL_CAPACITY = 16;
 
     public CustomArrayList() {
@@ -19,17 +19,17 @@ public class CustomArrayList implements List {
     }
 
     private void initiateArray(int capacity) {
-        array = new Object[capacity];
+        array = (T[]) new Object[capacity];
         arrayCapacity = capacity;
     }
 
     @Override
-    public void add(Object value) {
+    public void add(T value) {
         add(value, size);
     }
 
     @Override
-    public void add(Object value, int index) {
+    public void add(T value, int index) {
         if (size >= arrayCapacity) {
             increaseArrayLength();
         }
@@ -47,9 +47,9 @@ public class CustomArrayList implements List {
     }
 
     @Override
-    public Object remove(int index) {
+    public T remove(int index) {
         checkIndex(index);
-        Object old = array[index];
+        T old = array[index];
         array[index] = null;
         System.arraycopy(array, index + 1, array, index, size - index - 1);
         size--;
@@ -57,22 +57,25 @@ public class CustomArrayList implements List {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         checkIndex(index);
         return array[index];
     }
 
     @Override
-    public Object set(Object element, int index) {
+    public T set(T element, int index) {
         checkIndex(index);
-        Object old = array[index];
+        T old = array[index];
         array[index] = element;
         return old;
     }
 
     @Override
     public void clear() {
-        clear(array);
+        for (int i = 0; i < size; i++) {
+            array[i] = null;
+        }
+        size = 0;
     }
 
     @Override
@@ -82,16 +85,16 @@ public class CustomArrayList implements List {
 
     @Override
     public boolean isEmpty() {
-        return size > 0;
+        return size <= 0;
     }
 
     @Override
-    public boolean contains(Object value) {
+    public boolean contains(T value) {
         return indexOf(value) != -1;
     }
 
     @Override
-    public int indexOf(Object value) {
+    public int indexOf(T value) {
         for (int i = 0; i < size; i++) {
             if (Objects.equals(array[i], value)) {
                 return i;
@@ -101,7 +104,7 @@ public class CustomArrayList implements List {
     }
 
     @Override
-    public int lastIndexOf(Object value) {
+    public int lastIndexOf(T value) {
         for (int i = size - 1; i >= 0; i--) {
             if (Objects.equals(array[i], value)) {
                 return i;
@@ -112,7 +115,7 @@ public class CustomArrayList implements List {
 
     @Override
     public String toString() {
-        StringJoiner stringJoiner = new StringJoiner(", ", "[", "[");
+        StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
         for (int i = 0; i < size; i++) {
             stringJoiner.add(array[i].toString());
         }
@@ -121,18 +124,11 @@ public class CustomArrayList implements List {
 
     private void increaseArrayLength() {
         int oldLength = array.length;
-        int newLength = (int) (oldLength * 1.5);
-        Object[] newArray = new Object[newLength];
+        int newLength = (int) (oldLength * 1.5) + 1;
+        T[] newArray = (T[]) new Object[newLength];
         System.arraycopy(array, 0, newArray, 0, oldLength);
         array = newArray;
         arrayCapacity = newLength;
-    }
-
-    private void clear(Object[] array) {
-        for (int i = 0; i < size; i++) {
-            array[i] = null;
-        }
-        size = 0;
     }
 
     private void checkIndex(int index) {

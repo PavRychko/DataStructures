@@ -1,6 +1,7 @@
 package test;
 
 import main.CustomArrayList;
+import main.List;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,7 @@ public class CustomArrayListTest {
     @Test
     public void addWithoutIndexTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
 
         //verify
         assertEquals(first, list.get(0));
@@ -25,7 +26,7 @@ public class CustomArrayListTest {
     @Test
     public void addWithIndexTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
         String value = "test";
 
         //do
@@ -44,25 +45,25 @@ public class CustomArrayListTest {
     @Test
     public void addWithWrongIndexThrowsExceptionTest() {
         //given
-        CustomArrayList list = new CustomArrayList();
+        List<String> list = prepareList();
 
-        String expectedNegativeMessage = "your index -1 is out of bounds for size 0";
-        String expectedBigMessage = "your index 1 is out of bounds for size 0";
+        String expectedNegativeIndexMessage = "your index -1 is out of bounds for size 3";
+        String expectedMorThenSizeIndexMessage = "your index 12 is out of bounds for size 3";
 
         //do
         Exception negativeIndexException = assertThrows(IndexOutOfBoundsException.class, () -> list.add(first, -1));
-        Exception moreThenSizeException = assertThrows(IndexOutOfBoundsException.class, () -> list.add(second, 1));
+        Exception moreThenSizeException = assertThrows(IndexOutOfBoundsException.class, () -> list.add(second, 12));
 
         //verify
-        assertEquals(0, list.size());
-        assertEquals(expectedNegativeMessage, negativeIndexException.getMessage());
-        assertEquals(expectedBigMessage, moreThenSizeException.getMessage());
+        assertEquals(3, list.size());
+        assertEquals(expectedNegativeIndexMessage, negativeIndexException.getMessage());
+        assertEquals(expectedMorThenSizeIndexMessage, moreThenSizeException.getMessage());
     }
 
     @Test
     public void removeMovesValuesBackwardTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
 
         //do
         Object removed = list.remove(0);
@@ -76,7 +77,7 @@ public class CustomArrayListTest {
     @Test
     public void removeWithWrongIndexThrowsExceptionTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
 
         String expectedNegativeMessage = "your index -1 is out of bounds for size 3";
         String expectedBigMessage = "your index 3 is out of bounds for size 3";
@@ -94,7 +95,7 @@ public class CustomArrayListTest {
     @Test
     public void getWithWrongIndexThrowsExceptionTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
         String expectedNegativeMessage = "your index -1 is out of bounds for size 3";
         String expectedBigMessage = "your index 3 is out of bounds for size 3";
 
@@ -111,7 +112,7 @@ public class CustomArrayListTest {
     @Test
     public void setTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
         String newValue = "test";
 
         //do
@@ -126,7 +127,7 @@ public class CustomArrayListTest {
     @Test
     public void setWithWrongIndexThrowsExceptionTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
         String newValue = "test";
         String expectedNegativeMessage = "your index -1 is out of bounds for size 3";
         String expectedBigMessage = "your index 3 is out of bounds for size 3";
@@ -147,7 +148,7 @@ public class CustomArrayListTest {
     @Test
     public void clearAndIsEmptyTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
 
         //do & verify
         assertFalse(list.isEmpty());
@@ -161,7 +162,7 @@ public class CustomArrayListTest {
     @Test
     public void containsTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
         String fourth = "four";
 
         //do & verify
@@ -174,7 +175,7 @@ public class CustomArrayListTest {
     @Test
     public void containsNullValueTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
 
         //do & verify
         assertTrue(list.contains(first));
@@ -189,7 +190,7 @@ public class CustomArrayListTest {
     @Test
     public void indexOfTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
         list.add(first);
         list.add(null);
         String test = "test";
@@ -210,7 +211,7 @@ public class CustomArrayListTest {
     @Test
     public void lastIndexOfTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
         list.add(first);
         list.add(null);
         String test = "test";
@@ -231,7 +232,7 @@ public class CustomArrayListTest {
     @Test
     public void toStringTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
         String expected = "[first, second, third]";
 
         //do
@@ -242,9 +243,9 @@ public class CustomArrayListTest {
     }
 
     @Test
-    public void increaseArrayLengthTest(){
+    public void increaseArrayLengthTest() {
         //given
-        CustomArrayList list = prepareArrayList();
+        List<String> list = prepareList();
 
         //do
         for (int i = 0; i < 100; i++) {
@@ -255,8 +256,8 @@ public class CustomArrayListTest {
         assertEquals(103, list.size());
     }
 
-    private CustomArrayList prepareArrayList() {
-        CustomArrayList list = new CustomArrayList(4);
+    private List<String> prepareList() {
+        List<String> list = new CustomArrayList<>(4);
         list.add(first);
         list.add(second);
         list.add(third);
