@@ -1,4 +1,4 @@
-package main;
+package com.rychko.datastructures;
 
 // Abstract Data Type
 public interface List <T> {

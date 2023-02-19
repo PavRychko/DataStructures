@@ -1,26 +1,20 @@
-package main;
+package com.rychko.datastructures;
 
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class CustomArrayList<T> implements List<T> {
+public class ArrayList<T> implements List<T> {
 
     private int size = 0;
-    private int arrayCapacity;
     private T[] array;
     private static final int DEFAULT_INITIAL_CAPACITY = 16;
 
-    public CustomArrayList() {
-        initiateArray(DEFAULT_INITIAL_CAPACITY);
+    public ArrayList() {
+        this(DEFAULT_INITIAL_CAPACITY);
     }
 
-    public CustomArrayList(int capacity) {
-        initiateArray(capacity);
-    }
-
-    private void initiateArray(int capacity) {
+    public ArrayList(int capacity) {
         array = (T[]) new Object[capacity];
-        arrayCapacity = capacity;
     }
 
     @Override
@@ -30,19 +24,16 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public void add(T value, int index) {
-        if (size >= arrayCapacity) {
+        checkIndexForAdd(index);
+        if (size >= array.length) {
             increaseArrayLength();
         }
 
-        if (index == size) {
-            array[size] = value;
-        } else if (index < size && index >= 0) {
+        if (index < size) {
             System.arraycopy(array, index, array, index + 1, size - index);
-            array[index] = value;
-        } else {
-            checkIndex(index);
         }
 
+        array[index] = value;
         size++;
     }
 
@@ -50,8 +41,8 @@ public class CustomArrayList<T> implements List<T> {
     public T remove(int index) {
         checkIndex(index);
         T old = array[index];
-        array[index] = null;
         System.arraycopy(array, index + 1, array, index, size - index - 1);
+        array[size - 1] = null;
         size--;
         return old;
     }
@@ -85,7 +76,7 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean isEmpty() {
-        return size <= 0;
+        return size == 0;
     }
 
     @Override
@@ -117,22 +108,31 @@ public class CustomArrayList<T> implements List<T> {
     public String toString() {
         StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
         for (int i = 0; i < size; i++) {
+            if (array[i] == null) {
+                stringJoiner.add("null");
+                continue;
+            }
             stringJoiner.add(array[i].toString());
         }
         return stringJoiner.toString();
     }
 
     private void increaseArrayLength() {
-        int oldLength = array.length;
-        int newLength = (int) (oldLength * 1.5) + 1;
+        int newLength = (int) (size * 1.5) + 1;
+        @SuppressWarnings("unchecked")
         T[] newArray = (T[]) new Object[newLength];
-        System.arraycopy(array, 0, newArray, 0, oldLength);
+        System.arraycopy(array, 0, newArray, 0, size);
         array = newArray;
-        arrayCapacity = newLength;
     }
 
     private void checkIndex(int index) {
         if (index >= size || index < 0) {
+            throw new IndexOutOfBoundsException("your index " + index + " is out of bounds for size " + size);
+        }
+    }
+
+    private void checkIndexForAdd(int index) {
+        if (index > size || index < 0) {
             throw new IndexOutOfBoundsException("your index " + index + " is out of bounds for size " + size);
         }
     }

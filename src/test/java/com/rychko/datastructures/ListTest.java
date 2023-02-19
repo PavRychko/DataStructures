@@ -1,21 +1,38 @@
-package test;
+package com.rychko.datastructures;
 
-import main.CustomArrayList;
-import main.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CustomArrayListTest {
+public class ListTest {
     private final String first = "first";
     private final String second = "second";
     private final String third = "third";
+    private final List<String> list;
+
+    ListTest(List<String> emptyList){
+        list = emptyList;
+    }
+
+    @BeforeEach
+    public void prepareList() {
+        List<String> list = this.list;
+        list.add(first);
+        list.add(second);
+        list.add(third);
+        assertEquals(3, list.size());
+    }
+
+    @AfterEach
+    public void clearList(){
+        list.clear();
+    }
+
 
     @Test
     public void addWithoutIndexTest() {
-        //given
-        List<String> list = prepareList();
-
         //verify
         assertEquals(first, list.get(0));
         assertEquals(second, list.get(1));
@@ -26,7 +43,6 @@ public class CustomArrayListTest {
     @Test
     public void addWithIndexTest() {
         //given
-        List<String> list = prepareList();
         String value = "test";
 
         //do
@@ -45,8 +61,6 @@ public class CustomArrayListTest {
     @Test
     public void addWithWrongIndexThrowsExceptionTest() {
         //given
-        List<String> list = prepareList();
-
         String expectedNegativeIndexMessage = "your index -1 is out of bounds for size 3";
         String expectedMorThenSizeIndexMessage = "your index 12 is out of bounds for size 3";
 
@@ -62,9 +76,6 @@ public class CustomArrayListTest {
 
     @Test
     public void removeMovesValuesBackwardTest() {
-        //given
-        List<String> list = prepareList();
-
         //do
         Object removed = list.remove(0);
 
@@ -77,8 +88,6 @@ public class CustomArrayListTest {
     @Test
     public void removeWithWrongIndexThrowsExceptionTest() {
         //given
-        List<String> list = prepareList();
-
         String expectedNegativeMessage = "your index -1 is out of bounds for size 3";
         String expectedBigMessage = "your index 3 is out of bounds for size 3";
 
@@ -95,7 +104,6 @@ public class CustomArrayListTest {
     @Test
     public void getWithWrongIndexThrowsExceptionTest() {
         //given
-        List<String> list = prepareList();
         String expectedNegativeMessage = "your index -1 is out of bounds for size 3";
         String expectedBigMessage = "your index 3 is out of bounds for size 3";
 
@@ -112,7 +120,6 @@ public class CustomArrayListTest {
     @Test
     public void setTest() {
         //given
-        List<String> list = prepareList();
         String newValue = "test";
 
         //do
@@ -127,7 +134,6 @@ public class CustomArrayListTest {
     @Test
     public void setWithWrongIndexThrowsExceptionTest() {
         //given
-        List<String> list = prepareList();
         String newValue = "test";
         String expectedNegativeMessage = "your index -1 is out of bounds for size 3";
         String expectedBigMessage = "your index 3 is out of bounds for size 3";
@@ -147,9 +153,6 @@ public class CustomArrayListTest {
 
     @Test
     public void clearAndIsEmptyTest() {
-        //given
-        List<String> list = prepareList();
-
         //do & verify
         assertFalse(list.isEmpty());
 
@@ -162,7 +165,6 @@ public class CustomArrayListTest {
     @Test
     public void containsTest() {
         //given
-        List<String> list = prepareList();
         String fourth = "four";
 
         //do & verify
@@ -174,13 +176,7 @@ public class CustomArrayListTest {
 
     @Test
     public void containsNullValueTest() {
-        //given
-        List<String> list = prepareList();
-
         //do & verify
-        assertTrue(list.contains(first));
-        assertTrue(list.contains(second));
-        assertTrue(list.contains(third));
         assertFalse(list.contains(null));
 
         list.add(null);
@@ -190,7 +186,6 @@ public class CustomArrayListTest {
     @Test
     public void indexOfTest() {
         //given
-        List<String> list = prepareList();
         list.add(first);
         list.add(null);
         String test = "test";
@@ -211,7 +206,6 @@ public class CustomArrayListTest {
     @Test
     public void lastIndexOfTest() {
         //given
-        List<String> list = prepareList();
         list.add(first);
         list.add(null);
         String test = "test";
@@ -232,8 +226,8 @@ public class CustomArrayListTest {
     @Test
     public void toStringTest() {
         //given
-        List<String> list = prepareList();
-        String expected = "[first, second, third]";
+        list.add(null);
+        String expected = "[first, second, third, null]";
 
         //do
         String result = list.toString();
@@ -243,10 +237,7 @@ public class CustomArrayListTest {
     }
 
     @Test
-    public void increaseArrayLengthTest() {
-        //given
-        List<String> list = prepareList();
-
+    public void increaseLengthTest() {
         //do
         for (int i = 0; i < 100; i++) {
             list.add(Integer.toString(i));
@@ -256,12 +247,4 @@ public class CustomArrayListTest {
         assertEquals(103, list.size());
     }
 
-    private List<String> prepareList() {
-        List<String> list = new CustomArrayList<>(4);
-        list.add(first);
-        list.add(second);
-        list.add(third);
-        assertEquals(3, list.size());
-        return list;
-    }
 }
