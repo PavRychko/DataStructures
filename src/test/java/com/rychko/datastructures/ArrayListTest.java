@@ -1,10 +1,27 @@
 package com.rychko.datastructures;
 
-public class ArrayListTest extends ListTest {
+import org.junit.jupiter.api.Test;
 
-    ArrayListTest() {
-        super(new ArrayList<>());
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class ArrayListTest extends AbstractListTest {
+
+    @Override
+    public List<String> getList() {
+        return new ArrayList<String>();
     }
 
+    @Test
+    public void increaseLengthTest() {
+        //given
+        ArrayList<String> list = new ArrayList<>(10);
 
+        //do
+        for (int i = 0; i < 100; i++) {
+            list.add(Integer.toString(i));
+        }
+
+        //verify
+        assertEquals(100, list.size());
+    }
 }

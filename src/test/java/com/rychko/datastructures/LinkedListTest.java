@@ -1,8 +1,10 @@
 package com.rychko.datastructures;
 
-public class LinkedListTest extends ListTest {
+public class LinkedListTest extends AbstractListTest {
 
-    LinkedListTest() {
-        super(new LinkedList());
+
+    @Override
+    public List<String> getList() {
+        return new LinkedList<String>();
     }
 }

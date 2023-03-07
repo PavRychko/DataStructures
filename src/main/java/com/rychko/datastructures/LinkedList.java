@@ -46,12 +46,6 @@ public class LinkedList<T> implements List<T> {
         size++;
     }
 
-    private void checkIndexForAdd(int index) {
-        if (index > size || index < 0) {
-            throw new IndexOutOfBoundsException("your index " + index + " is out of bounds for size " + size);
-        }
-    }
-
     @Override
     public T remove(int index) {
         checkIndex(index);
@@ -76,21 +70,6 @@ public class LinkedList<T> implements List<T> {
     @Override
     public T get(int index) {
         return findNode(index).value;
-    }
-
-    private Node<T> findNode(int index) {
-        checkIndex(index);
-        Node<T> node = head;
-        for (int i = 0; i < index; i++) {
-            node = node.next;
-        }
-        return node;
-    }
-
-    private void checkIndex(int index) {
-        if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException("your index " + index + " is out of bounds for size " + size);
-        }
     }
 
     @Override
@@ -160,7 +139,7 @@ public class LinkedList<T> implements List<T> {
         for (int i = 0; i < size; i++) {
             T value = temp.getValue();
             temp = temp.getNext();
-            if (value == null){
+            if (value == null) {
                 stringJoiner.add("null");
                 continue;
             }
@@ -169,6 +148,35 @@ public class LinkedList<T> implements List<T> {
         return stringJoiner.toString();
     }
 
+    private void checkIndexForAdd(int index) {
+        if (index > size || index < 0) {
+            throw new IndexOutOfBoundsException("your index " + index + " is out of bounds for size " + size);
+        }
+    }
+
+    private void checkIndex(int index) {
+        if (index >= size || index < 0) {
+            throw new IndexOutOfBoundsException("your index " + index + " is out of bounds for size " + size);
+        }
+    }
+
+    private Node<T> findNode(int index) {
+        checkIndex(index);
+        Node<T> node;
+        if (index > (size / 2)) {
+            node = tail;
+            for (int i = 0; i < size - index - 1; i++) {
+                node = node.prev;
+            }
+        } else {
+            node = head;
+            for (int i = 0; i < index; i++) {
+                node = node.next;
+            }
+        }
+
+        return node;
+    }
 
     private static class Node<T> {
         private T value;

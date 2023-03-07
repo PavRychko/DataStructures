@@ -108,11 +108,7 @@ public class ArrayList<T> implements List<T> {
     public String toString() {
         StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
         for (int i = 0; i < size; i++) {
-            if (array[i] == null) {
-                stringJoiner.add("null");
-                continue;
-            }
-            stringJoiner.add(array[i].toString());
+            stringJoiner.add(String.valueOf(array[i]));
         }
         return stringJoiner.toString();
     }

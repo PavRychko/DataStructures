@@ -6,15 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ListTest {
+public abstract class AbstractListTest {
     private final String first = "first";
     private final String second = "second";
     private final String third = "third";
-    private final List<String> list;
+    private final List<String> list = getList();
 
-    ListTest(List<String> emptyList){
-        list = emptyList;
-    }
+    public abstract List getList();
 
     @BeforeEach
     public void prepareList() {
@@ -234,17 +232,6 @@ public class ListTest {
 
         //verify
         assertEquals(expected, result);
-    }
-
-    @Test
-    public void increaseLengthTest() {
-        //do
-        for (int i = 0; i < 100; i++) {
-            list.add(Integer.toString(i));
-        }
-
-        //verify
-        assertEquals(103, list.size());
     }
 
 }
