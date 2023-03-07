@@ -28,18 +28,15 @@ public class LinkedList<T> implements List<T> {
             }
             tail = newNode;
         } else if (index < size) {
-            Node<T> temp;
             if (index == 0) {
-                temp = head;
-                newNode.next = temp;
-                temp.prev = newNode;
+                newNode.next = head;
+                head.prev = newNode;
                 head = newNode;
             } else {
-                temp = head;
-                for (int i = 0; i < index; i++) {
-                    temp = temp.next;
-                }
+                Node<T> temp = findNode(index);
                 newNode.next = temp;
+                newNode.prev = temp.prev;
+                temp.prev.next = newNode;
                 temp.prev = newNode;
             }
         }
@@ -50,18 +47,20 @@ public class LinkedList<T> implements List<T> {
     public T remove(int index) {
         checkIndex(index);
         Node<T> removed = findNode(index);
-        if (index == 0) {
+
+        if (size == 1) {
+            head = tail = null;
+        } else if (index == 0) {
             head = removed.next;
             head.prev = null;
-        } else {
-            removed.prev.setNext(removed.next);
-            removed.next.setPrev(removed.prev);
-        }
-
-        if (Objects.equals(removed, tail)) {
+        } else if (index == size - 1) {
             tail = removed.prev;
             tail.next = null;
+        } else {
+            removed.prev.next = removed.next;
+            removed.next.prev = removed.prev;
         }
+
         size--;
         return removed.value;
 
@@ -75,22 +74,14 @@ public class LinkedList<T> implements List<T> {
     @Override
     public T set(T value, int index) {
         Node<T> nodeToChange = findNode(index);
-        T oldValue = nodeToChange.getValue();
-        nodeToChange.setValue(value);
+        T oldValue = nodeToChange.value;
+        nodeToChange.value = value;
         return oldValue;
     }
 
     @Override
     public void clear() {
-        Node<T> temp = head;
-        for (int i = 0; i < size; i++) {
-            temp.value = null;
-            temp.prev = null;
-            if (!Objects.equals(temp.next, null)) {
-                temp = temp.next;
-                temp.prev.setNext(null);
-            }
-        }
+        head = tail = null;
         size = 0;
     }
 
@@ -113,7 +104,7 @@ public class LinkedList<T> implements List<T> {
     public int indexOf(T value) {
         Node<T> temp = head;
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(temp.getValue(), value)) {
+            if (Objects.equals(temp.value, value)) {
                 return i;
             }
             temp = temp.next;
@@ -125,7 +116,7 @@ public class LinkedList<T> implements List<T> {
     public int lastIndexOf(T value) {
         Node<T> temp = tail;
         for (int i = size - 1; i > 0; i--) {
-            if (Objects.equals(temp.getValue(), value)) {
+            if (Objects.equals(temp.value, value)) {
                 return i;
             }
             temp = temp.prev;
@@ -137,8 +128,8 @@ public class LinkedList<T> implements List<T> {
         StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
         Node<T> temp = head;
         for (int i = 0; i < size; i++) {
-            T value = temp.getValue();
-            temp = temp.getNext();
+            T value = temp.value;
+            temp = temp.next;
             if (value == null) {
                 stringJoiner.add("null");
                 continue;
@@ -185,30 +176,6 @@ public class LinkedList<T> implements List<T> {
 
         Node(T value) {
             this.value = value;
-        }
-
-        public T getValue() {
-            return value;
-        }
-
-        public void setValue(T value) {
-            this.value = value;
-        }
-
-        public Node<T> getPrev() {
-            return prev;
-        }
-
-        public void setPrev(Node<T> prev) {
-            this.prev = prev;
-        }
-
-        public Node<T> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<T> next) {
-            this.next = next;
         }
     }
 

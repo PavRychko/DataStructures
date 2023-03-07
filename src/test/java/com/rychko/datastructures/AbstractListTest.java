@@ -46,14 +46,16 @@ public abstract class AbstractListTest {
         //do
         list.add(value, 0);
         list.add(value, list.size());
+        list.add(null, 3);
 
         //verify
-        assertEquals(5, list.size());
+        assertEquals(6, list.size());
         assertEquals(value, list.get(0));
         assertEquals(first, list.get(1));
         assertEquals(second, list.get(2));
-        assertEquals(third, list.get(3));
-        assertEquals(value, list.get(4));
+        assertNull(list.get(3));
+        assertEquals(third, list.get(4));
+        assertEquals(value, list.get(5));
     }
 
     @Test
