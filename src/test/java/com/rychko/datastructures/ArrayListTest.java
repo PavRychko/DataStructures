@@ -12,7 +12,7 @@ public class ArrayListTest extends AbstractListTest {
     }
 
     @Test
-    public void increaseLengthTest() {
+    public void increaseCapacityTest() {
         //given
         ArrayList<String> list = new ArrayList<>(10);
 

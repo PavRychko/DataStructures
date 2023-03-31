@@ -1,9 +1,11 @@
 package com.rychko.datastructures;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class ArrayList<T> implements List<T> {
+public class ArrayList<T> implements List<T>, Iterable<T> {
 
     private int size = 0;
     private T[] array;
@@ -25,8 +27,8 @@ public class ArrayList<T> implements List<T> {
     @Override
     public void add(T value, int index) {
         checkIndexForAdd(index);
-        if (size >= array.length) {
-            increaseArrayLength();
+        if (size == array.length) {
+            increaseCapacity();
         }
 
         if (index < size) {
@@ -113,7 +115,7 @@ public class ArrayList<T> implements List<T> {
         return stringJoiner.toString();
     }
 
-    private void increaseArrayLength() {
+    private void increaseCapacity() {
         int newLength = (int) (size * 1.5) + 1;
         @SuppressWarnings("unchecked")
         T[] newArray = (T[]) new Object[newLength];
@@ -131,5 +133,42 @@ public class ArrayList<T> implements List<T> {
         if (index > size || index < 0) {
             throw new IndexOutOfBoundsException("your index " + index + " is out of bounds for size " + size);
         }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+
+            int position = -1;
+            boolean flag = false;
+
+            @Override
+            public boolean hasNext() {
+                return position + 1 < size;
+            }
+
+            @Override
+            public T next() {
+                if (hasNext()) {
+                    position++;
+                    T result = array[position];
+                    flag = true;
+                    return result;
+                }
+
+                throw new NoSuchElementException();
+            }
+
+            @Override
+            public void remove() {
+                if (flag) {
+                    ArrayList.this.remove(position);
+                    position--;
+                    flag = false;
+                } else {
+                    throw new IllegalStateException("element doesn`t exist, you should call next() method before remove");
+                }
+            }
+        };
     }
 }

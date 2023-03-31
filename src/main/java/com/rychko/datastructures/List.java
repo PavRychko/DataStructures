@@ -1,7 +1,7 @@
 package com.rychko.datastructures;
 
 // Abstract Data Type
-public interface List <T> {
+public interface List <T> extends Iterable<T> {
     // add value to the end of the list
     void add(T value);
 

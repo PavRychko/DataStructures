@@ -4,6 +4,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractListTest {
@@ -24,7 +27,7 @@ public abstract class AbstractListTest {
     }
 
     @AfterEach
-    public void clearList(){
+    public void clearList() {
         list.clear();
     }
 
@@ -206,21 +209,23 @@ public abstract class AbstractListTest {
     @Test
     public void lastIndexOfTest() {
         //given
-        list.add(first);
+        list.add(second);
         list.add(null);
         String test = "test";
 
         //do
-        int resultForFirst = list.lastIndexOf(first);
+        int resultForSecond = list.lastIndexOf(second);
         int resultForThird = list.lastIndexOf(third);
         int resultForNull = list.lastIndexOf(null);
         int resultForNonAddedObject = list.lastIndexOf(test);
+        int resultForFirst = list.lastIndexOf(first);
 
         //verify
-        assertEquals(3, resultForFirst);
+        assertEquals(3, resultForSecond);
         assertEquals(2, resultForThird);
         assertEquals(4, resultForNull);
         assertEquals(-1, resultForNonAddedObject);
+        assertEquals(0, resultForFirst);
     }
 
     @Test
@@ -235,5 +240,66 @@ public abstract class AbstractListTest {
         //verify
         assertEquals(expected, result);
     }
+
+    @Test
+    public void iteratorNextTest() {
+        //given
+        Iterator<String> iterator = list.iterator();
+        int counter = 0;
+
+        //do
+        while (iterator.hasNext()) {
+            iterator.next();
+            counter++;
+        }
+
+        //verify
+        assertEquals(list.size(), counter);
+    }
+
+    @Test
+    public void iteratorNextThrowsNoSuchElementExceptionTest() {
+        //given
+        Iterator<String> iterator = list.iterator();
+
+        //do
+        iterator.next();
+        iterator.next();
+        iterator.next();
+
+        //verify
+        assertFalse(iterator.hasNext());
+        assertThrows(NoSuchElementException.class, iterator::next);
+    }
+
+    @Test
+    public void iteratorRemoveChangesSize() {
+        //given
+        Iterator<String> iterator = list.iterator();
+
+        //do
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+
+        assertEquals(0, list.size());
+    }
+
+    @Test
+    public void iteratorThrowsOnTwoTimesRemove() {
+        //given
+        Iterator<String> iterator = list.iterator();
+
+        //do & verify
+        assertThrows(IllegalStateException.class, iterator::remove);
+
+        iterator.next();
+        iterator.remove();
+
+        assertThrows(IllegalStateException.class, iterator::remove);
+        assertEquals(2, list.size());
+    }
+
 
 }
