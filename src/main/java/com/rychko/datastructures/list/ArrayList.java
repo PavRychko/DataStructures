@@ -1,4 +1,4 @@
-package com.rychko.datastructures;
+package com.rychko.datastructures.list;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

@@ -1,4 +1,4 @@
-package com.rychko.datastructures;
+package com.rychko.datastructures.list;
 
 public class LinkedListTest extends AbstractListTest {
 

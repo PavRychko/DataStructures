@@ -1,4 +1,4 @@
-package com.rychko.datastructures;
+package com.rychko.datastructures.list;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

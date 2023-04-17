@@ -1,4 +1,4 @@
-package com.rychko.datastructures;
+package com.rychko.datastructures.list;
 
 // Abstract Data Type
 public interface List <T> extends Iterable<T> {
