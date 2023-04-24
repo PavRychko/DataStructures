@@ -3,6 +3,9 @@ package com.rychko.datastructures.map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -68,6 +71,36 @@ public abstract class AbstractMapTest<K, V> {
     @Test
     public void removeThrowsNullPointerWithNullKey() {
         assertThrows(NullPointerException.class, () -> map.remove(null));
+    }
+
+    @Test
+    public void iteratorNextTest() {
+        //given
+        Iterator iterator = map.iterator();
+        int counter = 0;
+
+        //do
+        while (iterator.hasNext()) {
+            iterator.next();
+            counter++;
+        }
+
+        //verify
+        assertEquals(map.size(), counter);
+    }
+
+    @Test
+    public void iteratorNextThrowsNoSuchElementExceptionTest() {
+        //given
+        Iterator iterator = map.iterator();
+
+        //do
+        iterator.next();
+        iterator.next();
+
+        //verify
+        assertFalse(iterator.hasNext());
+        assertThrows(NoSuchElementException.class, iterator::next);
     }
 
 

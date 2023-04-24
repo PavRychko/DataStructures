@@ -1,12 +1,9 @@
 package com.rychko.datastructures.map;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
-public class HashMap<K, V> implements Map<K, V>, Iterable {
+public class HashMap<K, V> implements Map<K, V> {
     private int size = 0;
     private double loadFactor;
     private ArrayList<Entry>[] buckets = new ArrayList[5];
@@ -67,14 +64,16 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
     private Entry getEntry(K key) {
         ArrayList<Entry> list = getBucket(key);
         Entry entry = null;
-        for (int i = 0; i < list.size(); i++) {
-            entry = list.get(i);
+        Iterator iterator = iterator();
+        while (iterator.hasNext()) {
+            entry = (Entry) iterator.next();
             if (Objects.equals(key, entry.key)) {
                 return entry;
             }
         }
         return null;
     }
+
 
     private ArrayList<Entry> getBucket(K key) {
         return buckets[calculateBucket(key)];
@@ -88,9 +87,10 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
     }
 
     @Override
-    public java.util.Iterator iterator() {
+    public Iterator<Entry> iterator() {
         return new MapIterator();
     }
+
 
     private class Entry {
         private K key;
@@ -111,11 +111,13 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
 
         @Override
         public boolean hasNext() {
-            return !(buckets[bucketNumber].size() > entryNumber) && bucketNumber < buckets.length;
+            findNotEmptyBucket();
+            int bucketSize = buckets[bucketNumber].size();
+            return ( bucketSize > entryNumber) && bucketNumber < buckets.length;
         }
 
         @Override
-        public Object next() {
+        public Entry next() {
             if (hasNext()) {
                 Entry result = buckets[bucketNumber].get(entryNumber);
                 entryNumber++;
@@ -126,6 +128,17 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
                 return result;
             }
             throw new NoSuchElementException();
+        }
+
+        public boolean isEmptyBucket(List<Entry> bucket) {
+            return bucket.size() == 0;
+        }
+
+        public void findNotEmptyBucket() {
+            if (bucketNumber < buckets.length - 1 && isEmptyBucket(buckets[bucketNumber])) {
+                bucketNumber++;
+                findNotEmptyBucket();
+            }
         }
     }
 }
