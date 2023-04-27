@@ -103,5 +103,4 @@ public abstract class AbstractMapTest<K, V> {
         assertThrows(NoSuchElementException.class, iterator::next);
     }
 
-
 }
