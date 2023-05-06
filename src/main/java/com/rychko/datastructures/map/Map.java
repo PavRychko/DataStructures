@@ -1,6 +1,6 @@
 package com.rychko.datastructures.map;
 
-public interface Map<K, V>  extends Iterable{
+public interface Map<K, V>  extends Iterable {
 
     public V put(K key, V value);
 

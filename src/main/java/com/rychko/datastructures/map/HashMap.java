@@ -17,7 +17,7 @@ public class HashMap<K, V> implements Map<K, V> {
     public HashMap(int mapSize) {
         buckets = new ArrayList[mapSize];
         for (int i = 0; i < buckets.length; i++) {
-            buckets[i] = new ArrayList<>();
+            buckets[i] = new ArrayList<Entry>(1);
         }
     }
 
@@ -119,7 +119,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
 
     private class Entry {
-        private K key;
+        private final K key;
         private V value;
 
 
